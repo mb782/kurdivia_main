@@ -137,7 +137,12 @@ class _InfoUserState extends State<InfoUser> implements ApiStatusLogin {
                                                         fontSize: 40,
                                                         color: Colors.black),
                                                   )
-                                                      : Image.network(data['image'])),
+                                                      : Center(
+                                                        child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(35),
+                                                    child: Image.network(data['image']),
+                                                  ),
+                                                      )),
                                             ),
                                             Positioned(
                                                 bottom: 0,

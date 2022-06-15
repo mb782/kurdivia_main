@@ -248,26 +248,30 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                       document.data()! as Map<String, dynamic>);
                   return Stack(
                     children: [
-                      Positioned(
-                          right: 0,
-                          top: 140,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                            width: 140,
-                            height: 30,
-                            decoration: const BoxDecoration(
-                                color: kDarkBlue,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(30),bottomLeft: Radius.circular(30))
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(eventData.title),
-                                const Image(image: AssetImage('assets/images/share.png'),height: 15,width: 15,),
-                              ],
-                            ),
-                          )),
                       Container(
+                        margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.19,
+                            left: MediaQuery.of(context).size.width * 0.6),
+                        width: 140,
+                        height: 30,
+                        decoration: const BoxDecoration(
+                            color: kDarkBlue,
+                            borderRadius: const BorderRadius.only(
+                                topLeft: const Radius.circular(30),
+                                bottomLeft: const Radius.circular(30))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          //crossAxisAlignment:CrossAxisAlignment.center,
+                          children: [
+                            const Center(
+                                child: Image(
+                                  image: AssetImage('assets/images/share.png'),
+                                  height: 15,
+                                  width: 15,
+                                ))
+                          ],
+                        ),
+                      ),                      Container(
                           margin: EdgeInsets.only(top: 10, left: 100),
                           width: 150,
                           height: 40,

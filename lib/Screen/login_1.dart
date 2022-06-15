@@ -171,8 +171,7 @@ class _FirstPageState extends State<FirstPage> {
                           ),
                           InkWell(
                             onTap: (){
-                              // context.read<ApiService>().LoginFacebook(context);
-                              context.read<ApiService>().facebook();
+                              context.read<ApiService>().LoginFacebook(context);
 
                             },
                             child: Container(

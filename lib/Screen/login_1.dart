@@ -34,8 +34,8 @@ class _FirstPageState extends State<FirstPage> {
                     .width,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/1.jpg'),
-                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/4.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -100,6 +100,14 @@ class _FirstPageState extends State<FirstPage> {
                   child: Container(
                     height: 10,
                     decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black,
+                            blurRadius: 30,
+                            spreadRadius: 10,
+                            offset: Offset(0, 10),
+                          )
+                        ],
                         borderRadius: BorderRadius.circular(30), color: Colors.white),
                     child: Column(
                       children: [
@@ -121,6 +129,13 @@ class _FirstPageState extends State<FirstPage> {
                             width: 300,
                             height: 40,
                             decoration: BoxDecoration(
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black,
+                                    blurRadius: 20,
+                                    offset: Offset(0, 5),
+                                  )
+                                ],
                                 borderRadius: BorderRadius.circular(30), color: kDarkBlue),
                             child: const Center(
                                 child: Text(
@@ -140,6 +155,14 @@ class _FirstPageState extends State<FirstPage> {
                     child: Container(
                       height: 10,
                       decoration: const BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 20,
+                              blurRadius: 40,
+                              offset: Offset(0, 5),
+                            )
+                          ],
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)), color: Colors.white),
                       child: Column(
                         children: [
@@ -156,6 +179,13 @@ class _FirstPageState extends State<FirstPage> {
                               width: 300,
                               height: 40,
                               decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      blurRadius: 20,
+                                      offset: Offset(0, 5),
+                                    )
+                                  ],
                                   borderRadius: BorderRadius.circular(30), color: kDarkBlue),
                               child: Center(
                                   child: Row(
@@ -181,6 +211,13 @@ class _FirstPageState extends State<FirstPage> {
                               width: 300,
                               height: 40,
                               decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      blurRadius: 20,
+                                      offset: Offset(0, 5),
+                                    )
+                                  ],
                                   borderRadius: BorderRadius.circular(30), color: kDarkBlue),
                               child: Center(
                                   child: Row(

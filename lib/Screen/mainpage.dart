@@ -256,13 +256,14 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                         height: 30,
                         decoration: const BoxDecoration(
                             color: kDarkBlue,
-                            borderRadius: const BorderRadius.only(
-                                topLeft: const Radius.circular(30),
-                                bottomLeft: const Radius.circular(30))),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                bottomLeft: Radius.circular(30))),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           //crossAxisAlignment:CrossAxisAlignment.center,
                           children: [
+                            Text(eventData.title),
                             const Center(
                                 child: Image(
                                   image: AssetImage('assets/images/share.png'),

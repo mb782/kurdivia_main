@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kurdivia/Screen/login_1.dart';
+import 'package:kurdivia/Screen/mainpage.dart';
 import 'package:kurdivia/Widgets/navigatebar.dart';
 import 'package:kurdivia/constant.dart';
 import 'package:kurdivia/provider/ApiService.dart';
@@ -72,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => (loggedIn) ? FirstPage() : FirstPage(),
+          builder: (context) => (loggedIn) ? NavigateBar() : FirstPage(),
         ),
       );
     });

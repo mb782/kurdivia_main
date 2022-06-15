@@ -95,6 +95,12 @@ class _InfoUserState extends State<InfoUser> implements ApiStatusLogin {
                                       width: MediaQuery.of(context).size.width,
                                       height: 570,
                                       decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            colorFilter: ColorFilter.mode(Colors.lightBlue.withOpacity(0.5), BlendMode.color),
+                                            image: AssetImage('assets/images/5.jpg'),
+                                            opacity: 0.5,
+                                            fit: BoxFit.cover,
+                                          ),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: Colors.black38,
@@ -107,6 +113,9 @@ class _InfoUserState extends State<InfoUser> implements ApiStatusLogin {
                                             topRight: Radius.circular(30),
                                             topLeft: Radius.circular(30),
                                           )),
+                                      child: ClipRRect(
+
+                                      ),
                                     ),
                                     alignment: Alignment.bottomCenter,
                                   ),

@@ -28,13 +28,16 @@ class _FirstPageState extends State<FirstPage> {
           body: Stack(
             children: [
               Container(
+
                 width: MediaQuery
                     .of(context)
                     .size
                     .width,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
+                    colorFilter: ColorFilter.mode(Colors.blue.withOpacity(0.5), BlendMode.color),
                     image: AssetImage('assets/images/4.jpg'),
+                    opacity: 0.5,
                     fit: BoxFit.cover,
                   ),
                 ),

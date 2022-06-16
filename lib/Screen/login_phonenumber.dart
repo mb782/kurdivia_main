@@ -40,6 +40,13 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                     height: 350,
                     width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 20,
+                            offset: Offset(0, -20),
+                          )
+                        ],
                         color: Colors.white,
                         borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
                     ),
@@ -52,14 +59,25 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                         const SizedBox(
                           height: 40,
                         ),
-                        SizedBox(
+                        Container(
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black38,
+                                  blurRadius: 30,
+                                  offset: Offset(0, 0),
+                                )
+                              ]
+                          ),
                           width: 350,
                           child: IntlPhoneField(
                             decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
                               labelText: 'Phone Number',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: const BorderSide(),
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(15),
                               ),
                             ),
                             onChanged: (phone) {
@@ -75,7 +93,17 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                           child: DelayedDisplay(
                             delay: Duration(milliseconds: 500),
                             slidingCurve: Curves.bounceOut,
-                            slidingBeginOffset: Offset(0, 1),                            child: Container(
+                            slidingBeginOffset: Offset(0, 1),
+                            child: Container(
+                              decoration:  BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black38,
+                                      blurRadius: 30,
+                                      offset: Offset(0, 10),
+                                    )
+                                  ]
+                              ),
                                 margin: const EdgeInsets.symmetric(horizontal: 70,vertical: 10),
                                 child: Theme(
                                     data: ThemeData(
@@ -86,13 +114,15 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                                       controller: value.codeController,
                                       cursorColor: Colors.purple.shade900,
                                       decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
                                         label: const Center(
                                           child: Text("code"),
                                         ),
 
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(),
+                                          borderSide: BorderSide.none,
+                                          borderRadius: BorderRadius.circular(15),
                                         ),
                                       ),
                                     ))),
@@ -110,6 +140,13 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                               width: 200,
                               height: 45,
                               decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black38,
+                                    blurRadius: 30,
+                                    offset: Offset(0, 10),
+                                  )
+                                ],
                                 color: kDarkBlue,
                                 borderRadius: BorderRadius.circular(30),
                               ),

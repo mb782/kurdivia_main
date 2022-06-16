@@ -151,6 +151,8 @@ class _QuestionPageState extends State<QuestionPage> {
                                 c: snapshot.data!.docs[index].get('c'),
                                 maxsecond: snapshot.data!.docs[index].get('time'),
                                 image: snapshot.data!.docs[index].get('image'),
+                                isLast:(index+1==snapshot.data?.size)?true:false,
+                                answer: snapshot.data!.docs[index].get('answer'),
                               );
 
                               //   Stack(

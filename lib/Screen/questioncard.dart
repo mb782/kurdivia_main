@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
+import 'package:kurdivia/Screen/winners.dart';
 import 'package:kurdivia/provider/ApiService.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -16,8 +17,12 @@ class QuestionCard extends StatefulWidget {
     required this.c,
     required this.maxsecond,
     required this.image,
-  });
+    required this.isLast,
+    required this.answer,
 
+  });
+  var answer;
+  bool isLast;
   String question;
   String a;
   String b;
@@ -57,6 +62,8 @@ class _QuestionCardState extends State<QuestionCard> {
           Provider.of<ApiService>(context, listen: false)
               .pageController
               .nextPage(duration: Duration(seconds: 1), curve: Curves.ease);
+          (widget.isLast==true)?kNavigator(context, Winners()):null;
+
         }
       });
     });
@@ -117,16 +124,16 @@ class _QuestionCardState extends State<QuestionCard> {
               height: 335,
               child: Column(
                 children: [
-                  Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: LinearProgressIndicator(
-                        minHeight: 40,
-                        value: 0.8,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                      )),
-                  // const SizedBox(
-                  //   height: 50,
-                  // ),
+                  // Container(
+                  //     margin: const EdgeInsets.symmetric(horizontal: 20),
+                  //     child: LinearProgressIndicator(
+                  //       minHeight: 40,
+                  //       value: 0.8,
+                  //       valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                  //     )),
+                  const SizedBox(
+                    height: 50,
+                  ),
                   DelayedDisplay(
                     delay: Duration(milliseconds: 500),
                     slidingCurve: Curves.elasticInOut,
@@ -146,7 +153,7 @@ class _QuestionCardState extends State<QuestionCard> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: selecteda ? Colors.yellow.shade400.withOpacity(0.8) : kLightBlue,
+                          color:  selecteda ? (Second==0)?(widget.answer==widget.a.toString())?Colors.lightGreenAccent:Colors.red:Colors.yellow.shade400.withOpacity(0.8) : kLightBlue,
                         ),
                         child: Text('A : ${widget.a}'),
                       ),
@@ -174,7 +181,7 @@ class _QuestionCardState extends State<QuestionCard> {
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: selectedb ? Colors.yellow.shade400.withOpacity(0.8) : kLightBlue,
+                          color: selectedb ? (Second==0)?(widget.answer==widget.b.toString())?Colors.lightGreenAccent:Colors.red:Colors.yellow.shade400.withOpacity(0.8) : kLightBlue,
                         ),
                         child: Text('B : ${widget.b}'),
                       ),
@@ -202,7 +209,7 @@ class _QuestionCardState extends State<QuestionCard> {
                             horizontal: 20, vertical: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: selectedc ? Colors.yellow.shade400.withOpacity(0.8) : kLightBlue,
+                          color:  selectedc ? (Second==0)?(widget.answer==widget.c.toString())?Colors.lightGreenAccent:Colors.red:Colors.yellow.shade400.withOpacity(0.8) : kLightBlue,
                         ),
                         child: Text('C : ${widget.c}'),
                       ),

@@ -7,12 +7,17 @@ import 'package:kurdivia/Screen/questionpage.dart';
 import 'package:kurdivia/constant.dart';
 import 'package:ntp/ntp.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import '../Widgets/navigatebar.dart';
+import '../Widgets/video_player_widget.dart';
 import '../provider/ApiService.dart';
 
 class SponsorPage extends StatefulWidget {
-  SponsorPage({Key? key}) : super(key: key);
+  SponsorPage({
+    required this.maxsecond,
+});
+  int maxsecond;
   late BuildContext context;
 
   @override
@@ -20,6 +25,7 @@ class SponsorPage extends StatefulWidget {
 }
 
 class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
+  late VideoPlayerController controller;
   int Second = 0;
   Timestamp timeevent = Timestamp.now();
 
@@ -27,39 +33,50 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
 
   @override
   void initState() {
-    timeevent = Provider.of<ApiService>(context, listen: false).timeevent;
-    Second = Provider.of<ApiService>(context, listen: false).maxsecond;
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (Second > 0) {
-          Second--;
-        }
-        if (Second == 0) {
-          timer.cancel();
-          // Provider.of<ApiService>(context,listen: false).getnumusersadd();
-          kNavigator(context, QuestionPage());
-          Provider.of<ApiService>(context, listen: false).checkntp(timeevent);
-          if(Provider.of<ApiService>(context, listen: false).checkenterevent){
+    Future.delayed(Duration.zero).then((value){
+      controller = VideoPlayerController.network(Provider.of<ApiService>(context, listen: false).imagesponsor)
+        ..addListener(() => setState(() {}))
+        ..setLooping(true)
+        ..initialize().then((_) => controller.play());
+      Second =Provider.of<ApiService>(context, listen: false).maxsecond;
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          if (Second > 0) {
+            Second--;
+          }
+          if (Second == 0) {
+
+            Provider.of<ApiService>(context, listen: false).checkntp();
+            if(Provider.of<ApiService>(context, listen: false).visibily){
+              if(Provider.of<ApiService>(context, listen: false).checkenterevent){
+                timer.cancel();
+                Provider.of<ApiService>(context, listen: false).getcheckenter();
+                controller.pause();
+                kNavigator(context, QuestionPage());
+              }
+            }
+            else{
+              timer.cancel();
+              controller.pause();
+              kNavigator(context, QuestionPage());
+            }
 
           }
-
-        }
+        });
       });
     });
+
     super.initState();
   }
 
   @override
   void dispose() {
+    controller.dispose();
     timer!.cancel();
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +116,8 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image(
+                            children:  [
+                              const Image(
                                 image: AssetImage('assets/images/user.png'),
                                 height: 20,
                                 color: Colors.white,
@@ -110,8 +127,9 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                                   builder: (BuildContext context,
                                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                                     if (snapshot.hasData) {
+                                      List list = snapshot.data!.get('users');
                                       return Text(
-                                          snapshot.data!.get('numusers').toString());
+                                          list.length.toString());
                                     }
                                     return CircularProgressIndicator();
                                   }),
@@ -124,6 +142,8 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                         InkWell(
                           onTap: () {
                             kNavigatorBack(context);
+                            // kNavigator(context, QuestionPage());
+
                           },
                           child: Container(
                             child: const Image(
@@ -144,13 +164,27 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasData) {
-                          print('-----------------------------------------------');
-                          print(snapshot.data!.docs[0]);
+                          value.imagesponsor = snapshot
+                              .data!.docs[0]
+                              .get('image');
+                          value.namesponsor = snapshot
+                              .data!.docs[0]
+                              .get('title');
+                          value.linksponsor = snapshot
+                              .data!.docs[0]
+                              .get('link');
                           return Column(
                             children: [
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black38,
+                                        blurRadius: 20,
+                                        offset: Offset(0, -20),
+                                      )
+                                    ],
                                     borderRadius: const BorderRadius.vertical(
                                         top: Radius.circular(30)),
                                     color: Colors.grey.shade300),
@@ -165,6 +199,14 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                                       height: 100,
                                       width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black38,
+                                              blurRadius: 10,
+                                              spreadRadius: 5,
+                                              offset: Offset(0, 10),
+                                            )
+                                          ],
                                           borderRadius: BorderRadius.circular(30),
                                           color: kLightBlue),
                                       child: Column(
@@ -195,11 +237,11 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                                               alignment: Alignment.topCenter,
                                             ),
                                             onTap: () async {
-                                              DateTime ntptime = await NTP.now();
-                                              Timestamp ts =
-                                                  snapshot.data!.docs[0].get('date');
-                                              print(ts.toDate());
-                                              print(ntptime.difference(ts.toDate()));
+                                              // DateTime ntptime = await NTP.now();
+                                              // Timestamp ts =
+                                              //     snapshot.data!.docs[0].get('date');
+                                              // print(ts.toDate());
+                                              // print(ntptime.difference(ts.toDate()));
                                             },
                                           ),
                                         ],
@@ -211,16 +253,27 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(30),
                                       child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.black,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black38,
+                                              blurRadius: 10,
+                                              spreadRadius: 5,
+                                              offset: Offset(0, 10),
+                                            )
+                                          ],
+                                        ),
                                         width: MediaQuery.of(context).size.width,
                                         height: 250,
-                                        color: Colors.black,
-                                        child: ClipRRect(
+                                        child: value.file == true ?
+                                        ClipRRect(
                                           child: Image(
                                               image: NetworkImage(snapshot
                                                   .data!.docs[0]
                                                   .get('image'))),
                                           borderRadius: BorderRadius.circular(30),
-                                        ),
+                                        ): VideoPlayerWidget(controller: controller),
                                       ),
                                     ),
                                     const SizedBox(
@@ -311,9 +364,6 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
     });
   }
 
-  getnum() {
-    Provider.of<ApiService>(context, listen: false).idevents;
-  }
 
   @override
   void accountAvailable() {}

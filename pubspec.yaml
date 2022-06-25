@@ -54,6 +54,10 @@ dependencies:
   image_picker: ^0.8.4+4
   delayed_display: ^2.0.0
   syncfusion_flutter_gauges: ^20.1.60
+  confetti: ^0.7.0
+  url_launcher: ^6.0.18
+  video_player: ^2.4.5
+
 
 dev_dependencies:
   flutter_test:

@@ -36,7 +36,7 @@ class _FirstPageState extends State<FirstPage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     colorFilter: ColorFilter.mode(Colors.blue.withOpacity(0.5), BlendMode.color),
-                    image: AssetImage('assets/images/4.jpg'),
+                    image: AssetImage('assets/images/4.png'),
                     opacity: 0.5,
                     fit: BoxFit.cover,
                   ),

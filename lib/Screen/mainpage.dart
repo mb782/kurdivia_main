@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:kurdivia/Screen/age.dart';
@@ -9,7 +10,7 @@ import 'package:kurdivia/constant.dart';
 import 'package:kurdivia/provider/ApiService.dart';
 import 'package:ntp/ntp.dart';
 import 'package:provider/provider.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../Widgets/navigatebar.dart';
 import '../Model/event.dart';
 import '../Widgets/navigatebar.dart';
@@ -86,89 +87,95 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                       stream: context.read<ApiService>().getAllEvents(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
+
                         if (snapshot.hasData) {
                           return SingleChildScrollView(
                             child: Column(
                               children: [
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.73,
-                                  child: ListView.builder(
-                                    itemCount: snapshot.data!.docs.length,
-                                    itemBuilder: (context, index) {
-                                      {
-                                        return DelayedDisplay(
-                                          delay: Duration(
-                                              milliseconds:
-                                                  (600 + ((index + 1) * 400))
-                                                      .toInt()),
-                                          fadeIn: true,
-                                          slidingCurve: Curves.easeIn,
-                                          child: InkWell(
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 200,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 10),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Colors.black,
-                                                    blurRadius: 20,
-                                                    offset: Offset(0, 10),
-                                                  )
-                                                ]
-                                              ),
-                                              child: Stack(
-                                                children: [
-                                                  ClipRRect(
-                                                    child: Image(
-                                                      image: const AssetImage(
-                                                          'assets/images/3.png'),
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      height: 200,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      DelayedDisplay(
-                                                        child: Container(
-                                                          child: getdata(
-                                                              snapshot
-                                                                  .data!
-                                                                  .docs[index]
-                                                                  .id),
-                                                        ),
-                                                        delay: Duration(
-                                                            milliseconds: (600 +
-                                                                ((index +
-                                                                    1) *
-                                                                    400))
-                                                                .toInt()),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            onTap: () async {},
-                                          ),
-                                        );
-                                      }
+                                      MediaQuery.of(context).size.height * 0.745,
+                                  child: RefreshIndicator(
+                                    onRefresh: ()async{
+                                      value.notifyListeners();
                                     },
+                                    child: ListView.builder(
+                                      itemCount: snapshot.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        {
+                                          return DelayedDisplay(
+                                            delay: Duration(
+                                                milliseconds:
+                                                    (0 + ((index + 1) * 400))
+                                                        .toInt()),
+                                            fadeIn: true,
+                                            slidingCurve: Curves.easeIn,
+                                            child: InkWell(
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 200,
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 20,
+                                                        vertical: 10),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: Colors.black,
+                                                      blurRadius: 20,
+                                                      offset: Offset(0, 10),
+                                                    )
+                                                  ]
+                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    ClipRRect(
+                                                      child: Image(
+                                                        image: const AssetImage(
+                                                            'assets/images/3.png'),
+                                                        width:
+                                                            MediaQuery.of(context)
+                                                                .size
+                                                                .width,
+                                                        height: 200,
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30),
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        DelayedDisplay(
+                                                          child: Container(
+                                                            child: getdata(
+                                                                snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                    .id),
+                                                          ),
+                                                          delay: Duration(
+                                                              milliseconds: (0 +
+                                                                  ((index +
+                                                                      1) *
+                                                                      400))
+                                                                  .toInt()),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              onTap: () async {},
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],
@@ -231,10 +238,10 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
   getdata(x) {
     return Consumer<ApiService>(builder: (context, value, child) {
       return StreamBuilder<QuerySnapshot>(
+
         stream: context.read<ApiService>().getAllEventsData(x),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          // Timestamp ts = snapshot.data!.docs[0].get('date');
-          // Provider.of<ApiService>(context,listen: false).checkenter(ts);
+
           if (snapshot.hasData) {
             return Container(
               height: 200,
@@ -248,29 +255,38 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                       document.data()! as Map<String, dynamic>);
                   return Stack(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.19,
-                            left: MediaQuery.of(context).size.width * 0.6),
-                        width: 140,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                            color: kDarkBlue,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                bottomLeft: Radius.circular(30))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //crossAxisAlignment:CrossAxisAlignment.center,
-                          children: [
-                            Text(eventData.title),
-                            const Center(
-                                child: Image(
-                                  image: AssetImage('assets/images/share.png'),
-                                  height: 15,
-                                  width: 15,
-                                ))
-                          ],
+                      InkWell(
+                        onTap: ()async{
+                          final url = eventData.link;
+                          await launch(url);
+                          if (await canLaunch(
+                              url)) {
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.19,
+                              left: MediaQuery.of(context).size.width * 0.6),
+                          width: 120,
+                          height: 30,
+                          decoration: const BoxDecoration(
+                              color: kDarkBlue,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  bottomLeft: Radius.circular(30))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //crossAxisAlignment:CrossAxisAlignment.center,
+                            children: [
+                              Text(eventData.title),
+                              const Center(
+                                  child: Image(
+                                    image: AssetImage('assets/images/share.png'),
+                                    height: 15,
+                                    width: 15,
+                                  ))
+                            ],
+                          ),
                         ),
                       ),                      Container(
                           margin: EdgeInsets.only(top: 10, left: 100),
@@ -297,7 +313,7 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                         left: 0,
                         child: Container(
                           padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           height: 30,
                           width: 60,
                           decoration: const BoxDecoration(
@@ -327,16 +343,17 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                         left: 0,
                         child: InkWell(
                           onTap: ()async{
-                            DateTime ntptime = await NTP.now();
-                            Timestamp ts = snapshot.data!.docs[0].get('date');
-                            print(ntptime.toUtc());
-                            print(ts.toDate().toUtc());
-                            print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
-                            print(ntptime.toUtc().difference(ts.toDate().toUtc()).inSeconds);
+                            // DateTime ntptime = await NTP.now();
+                            // Timestamp ts = snapshot.data!.docs[0].get('date');
+                            // print(ntptime.toUtc());
+                            // print(ts.toDate().toUtc());
+                            // print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
+                            // print(ntptime.toUtc().difference(ts.toDate().toUtc()).inSeconds);
+
                           },
                           child: Container(
                             padding:
-                                EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             height: 30,
                             width: 40,
                             decoration: const BoxDecoration(
@@ -353,22 +370,19 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                         ),
                       ),
                       Visibility(
-                        visible: value.visibily,
+                        visible: true,
                         child: Positioned(
                           top: 100,
                           left: 130,
                           child: InkWell(
                             onTap: () async {
-                              DateTime ntptime = await NTP.now();
-                              Timestamp ts = snapshot.data!.docs[0].get('date');
-                              value.maxsecond = ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds;
-                              value.timeevent = snapshot.data!.docs[0].get('date');
-                              value.maxsecond = 2;
-                              value.idevents = x;
-                              // value.getnumusersadd();
-                              kNavigator(context, SponsorPage());
-                              print(value.idevents);
-                              print(value.maxsecond);
+
+                              await value.getsponsor(snapshot.data!.docs[0].get('date'),x,snapshot.data!.docs[0].get('image'),snapshot.data!.docs[0].get('file'));
+                              kNavigator(context, SponsorPage(maxsecond: value.maxsecond));
+                              if (kDebugMode) {
+                                print(value.idevents);
+                                print(value.maxsecond);
+                              }
                             },
                             child: Container(
                               height: 40,
@@ -398,6 +412,7 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
             );
             //;
           } else if (snapshot.hasError) {
+
             return Column(
               children: [
                 Text(snapshot.error.toString()),
@@ -410,4 +425,5 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
       );
     });
   }
+
 }

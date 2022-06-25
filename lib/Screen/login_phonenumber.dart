@@ -40,7 +40,7 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                     height: 350,
                     width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
                             blurRadius: 20,
@@ -60,7 +60,7 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                           height: 40,
                         ),
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black38,
@@ -91,11 +91,11 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                         Visibility(
                           visible: (value.isWaitingForCode == false) ? false : true,
                           child: DelayedDisplay(
-                            delay: Duration(milliseconds: 500),
+                            delay: const Duration(milliseconds: 500),
                             slidingCurve: Curves.bounceOut,
-                            slidingBeginOffset: Offset(0, 1),
+                            slidingBeginOffset: const Offset(0, 1),
                             child: Container(
-                              decoration:  BoxDecoration(
+                              decoration:  const BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black38,
@@ -140,7 +140,7 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                               width: 200,
                               height: 45,
                               decoration: BoxDecoration(
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     color: Colors.black38,
                                     blurRadius: 30,

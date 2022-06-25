@@ -40,16 +40,17 @@ class _InfoLoginState extends State<InfoLogin> implements ApiStatusLogin {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/images/1.jpg"),
-                    fit: BoxFit.fill,
-                  ),
+                    colorFilter: ColorFilter.mode(Colors.blue.withOpacity(0.5), BlendMode.color),
+                    image: const AssetImage("assets/images/4.png"),
+                    opacity: 0.5,
+                    fit: BoxFit.cover,                  ),
                 ),
               ),
               SingleChildScrollView(
                 child: Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.14),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.19),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   height: 630,

@@ -54,7 +54,9 @@ class _InfoUserState extends State<InfoUser> implements ApiStatusLogin {
                     right: 30,
                     top: 30,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        value.signOut(context);
+                      },
                       child: const Image(
                         height: 40,
                         width: 40,
@@ -97,7 +99,7 @@ class _InfoUserState extends State<InfoUser> implements ApiStatusLogin {
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                             colorFilter: ColorFilter.mode(Colors.lightBlue.withOpacity(0.5), BlendMode.color),
-                                            image: AssetImage('assets/images/5.jpg'),
+                                            image: AssetImage('assets/images/5.png'),
                                             opacity: 0.5,
                                             fit: BoxFit.cover,
                                           ),

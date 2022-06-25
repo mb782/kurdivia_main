@@ -62,13 +62,26 @@ class ApiService extends ChangeNotifier {
   String Phonnumber = '';
   DateTime? dateTime;
   int age = 0;
-  int maxsecond = 60;
+  int maxsecond = 0;
   String idevents = '';
   int entertime = 0;
   bool visibily = true;
   int index = 1;
   Timestamp timeevent = Timestamp.now();
   bool checkenterevent = false;
+
+  String imagesponsor = '';
+  String namesponsor = '';
+  String linksponsor = '';
+  bool file = false;
+
+  String question = '';
+  String qanswer = '';
+  int answera = 0;
+  int answerb = 0;
+  int answerc = 0;
+  bool winner = true;
+
 
   // GET
   bool loadingAuth = false;
@@ -131,6 +144,10 @@ class ApiService extends ChangeNotifier {
     loadingAuth = b;
     notifyListeners();
   }
+  setquestion(String answer){
+    qanswer = answer;
+    notifyListeners();
+  }
 
   initHive() async {
     if (!Hive.isBoxOpen('login')) {
@@ -157,10 +174,19 @@ class ApiService extends ChangeNotifier {
 
 
 
+
+
   Stream<QuerySnapshot> getAllEvents(){
     return fs.collection('events').snapshots();
 
   }
+  Future<DocumentSnapshot<Map<String, dynamic>>> getAllwinner(){
+    return fs.collection('events').doc('cm2a9V4Vd9TPOooqZ1FG').get();
+  }
+  Future<DocumentSnapshot<Map<String, dynamic>>> getAllwinnerdetail(x){
+    return fs.collection('users').doc(x).get();
+  }
+
   Stream<QuerySnapshot> getAllEventsData(id){
     return fs.collection('events').doc(id).collection('data').snapshots();
 
@@ -179,35 +205,138 @@ class ApiService extends ChangeNotifier {
     index = idx + 1;
     notifyListeners();
   }
-  getusers(){
-    getnumusersremove();
-  }
-
-  getnumusersadd (){
-    fs.collection('events').doc(idevents).get().then((value){
-      int num = value.get('numusers');
-      Map<String,dynamic> map = {};
-      map['numusers'] = num+1;
-      print(map);
-      fs.collection('events').doc(idevents).update(map);
-    });
-  }
-  getnumusersremove (){
-    fs.collection('events').doc(idevents).get().then((value){
-      int num = value.get('numusers');
-      Map<String,dynamic> map = {};
-      if(num > 0){
-        map['numusers'] = num-1;
-        print(map);
-        fs.collection('events').doc(idevents).update(map);
-      }
-
-    });
-  }
-  checkntp(Timestamp ts)async{
+  getsponsor(Timestamp timestamp,x,String image,bool files)async{
     DateTime ntptime = await NTP.now();
-    print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
-    if(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds == 0){
+    Timestamp ts = timestamp;
+    maxsecond = ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds;
+    if(maxsecond > 0 && maxsecond <= 300){
+      visibily = true;
+    }
+    else{
+      visibily = false;
+      maxsecond = 10;
+    }
+    file = files;
+    imagesponsor = image;
+    idevents = x;
+    timeevent = timestamp;
+  }
+
+
+  Future<bool> getvisibilyenter (DateTime dateTime)async{
+    DateTime ntp = await NTP.now();
+    if(ntp.toUtc().difference(dateTime.toUtc()).inSeconds <= 300){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+
+  getcheckenter()async{
+    List list = [
+      myUser,
+    ];
+    Map<String,dynamic> map = {
+      'users' : FieldValue.arrayUnion(list),
+    };
+    await fs.collection('events').doc(idevents).update(map);
+    // if(checkenterevent == true){
+    //   checkenterevent =false;
+    //   notifyListeners();
+    //   await checkinsiduser(false);
+    //   print('----------yyyyy---------------------');
+    // }
+    // if(checkenterevent == false){
+    //   checkenterevent == true;
+    //   notifyListeners();
+    //   await checkinsiduser(true);
+    //   print('-----------nnnnnn--------------------');
+    // }
+  }
+  // checkinsiduser(bool enter)async{
+  //   if(enter == true){
+  //
+  //   }
+  //   else if(enter == false){
+  //     List list = [
+  //       myUser,
+  //     ];
+  //     Map<String,dynamic> map = {
+  //       'users' : FieldValue.arrayRemove(list),
+  //     };
+  //     await fs.collection('events').doc(idevents).update(map).whenComplete((){
+  //       print('complete');
+  //     }
+  //     );
+  //   }
+  // }
+  getwinner()async{
+    if(winner == true){
+      List list = [
+        myUser,
+      ];
+      Map<String,dynamic> map = {
+        'winner' : FieldValue.arrayUnion(list),
+      };
+      await fs.collection('events').doc(idevents).update(map).whenComplete(() {
+        print(winner);
+      });
+    }
+
+  }
+  getresetanswer(){
+    answera = 0;
+    answerb = 0;
+    answerc = 0;
+  }
+  getanswer(bool answer)async{
+    if( qanswer == ''){
+      print('--------------------dsfhdsjk');
+      winner = false;
+      await fs.collection('events').doc(idevents).collection('question').doc(question).get().then((value){
+        List lista = value.get('answera');
+        List listb = value.get('answerb');
+        List listc = value.get('answerc');
+        answera = lista.length;
+        answerb = listb.length;
+        answerc = listc.length;
+        notifyListeners();
+      });
+    }
+    if( qanswer != ''){
+      if(!answer){
+        winner = false;
+      }
+      print('--------------------dsfhdsjk');
+      print(winner);
+      List list = [
+        myUser,
+      ];
+      Map<String,dynamic> map = {
+        'answer$qanswer' : FieldValue.arrayUnion(list),
+      };
+      await fs.collection('events').doc(idevents).collection('question').doc(question).update(map).whenComplete(() async{
+        await fs.collection('events').doc(idevents).collection('question').doc(question).get().then((value){
+          List lista = value.get('answera');
+          List listb = value.get('answerb');
+          List listc = value.get('answerc');
+          answera = lista.length;
+          answerb = listb.length;
+          answerc = listc.length;
+          notifyListeners();
+        });
+      });
+    }
+
+  }
+
+  checkntp()async{
+    DateTime ntptime = await NTP.now();
+    // print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
+    if(timeevent.toDate().toUtc().difference(ntptime.toUtc()).inSeconds == 0){
       checkenterevent = true;
       notifyListeners();
     }

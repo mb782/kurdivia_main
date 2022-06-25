@@ -5,15 +5,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kurdivia/Screen/login_1.dart';
 import 'package:kurdivia/Screen/mainpage.dart';
+import 'package:kurdivia/Screen/winners.dart';
 import 'package:kurdivia/Widgets/navigatebar.dart';
 import 'package:kurdivia/constant.dart';
 import 'package:kurdivia/provider/ApiService.dart';
 import 'package:provider/provider.dart';
 
+import 'Screen/questioncard.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -37,6 +40,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -47,7 +51,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   bool loggedIn = false;
-
 
   @override
   void initState() {
@@ -73,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => (loggedIn) ? FirstPage() : FirstPage(),
+          builder: (context) => (loggedIn) ? NavigateBar() : FirstPage(),
         ),
       );
     });

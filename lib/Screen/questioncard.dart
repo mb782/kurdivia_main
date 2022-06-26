@@ -244,12 +244,10 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
                                 borderRadius: BorderRadius.circular(25),
                                 color: selecteda
                                     ? (Second == 0)
-                                    ? (widget.answer ==
-                                    widget.a.toString())
+                                    ? (widget.answer == widget.a.toString())
                                     ? Colors.lightGreenAccent
                                     : Colors.red
-                                    : Colors.yellow.shade400
-                                    .withOpacity(0.8)
+                                    : Colors.yellow.shade400.withOpacity(0.8)
                                     : kLightBlue,
                               ),
                               child: Stack(

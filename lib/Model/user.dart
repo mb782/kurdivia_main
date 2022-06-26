@@ -21,7 +21,7 @@ class UserData {
     required this.location,
     required this.age,
     required this.phoneNumber,
-    this.image,
+    required this.image,
 
 
   });

@@ -21,7 +21,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
   'id': instance.id,
-  'fullName': instance.fullName,
+  'name': instance.fullName,
   'occupation': instance.occupation,
   'location': instance.location,
   'age': instance.age,

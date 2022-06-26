@@ -271,7 +271,7 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                                           child: Image(
                                               image: NetworkImage(snapshot
                                                   .data!.docs[0]
-                                                  .get('image'))),
+                                                  .get('image')),fit: BoxFit.fill,),
                                           borderRadius: BorderRadius.circular(30),
                                         ): VideoPlayerWidget(controller: controller),
                                       ),

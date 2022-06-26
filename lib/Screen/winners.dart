@@ -39,6 +39,7 @@ class _WinnersState extends State<Winners> implements ApiStatusLogin {
         ..addListener(() => setState(() {}))
         ..setLooping(true)
         ..initialize().then((_) => controller2.play());
+      controller.play();
     });
 
     super.initState();
@@ -247,7 +248,8 @@ class _WinnersState extends State<Winners> implements ApiStatusLogin {
                                 return Container(
                                   height: 200,
                                   child: ListView.builder(
-                                    itemCount: list.length,
+                                    itemCount: value.numwinner,
+
                                       itemBuilder: (context,index){
                                     return Container(
                                       margin: EdgeInsets.symmetric(vertical: 5),

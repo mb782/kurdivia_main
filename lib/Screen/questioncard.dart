@@ -123,9 +123,11 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
             if (loading == false) {
               // Provider.of<ApiService>(context, listen: false).getanswer();
               if(checkanswer() == false){
+                print('${checkanswer()}--------11111----');
                 Provider.of<ApiService>(context, listen: false).getanswer(false);
               }
               else if (checkanswer() == true){
+                print('${checkanswer()}-------22222-----');
                 Provider.of<ApiService>(context, listen: false).getanswer(true);
               }
               loading = true;

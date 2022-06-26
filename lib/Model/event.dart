@@ -13,7 +13,6 @@ class EventData {
   String numwinner;
   String price;
   String opprice;
-  int numusers;
 
 
 
@@ -25,7 +24,6 @@ class EventData {
     required this.numwinner,
     required this.price,
     required this.opprice,
-    required this.numusers,
 
 
   });

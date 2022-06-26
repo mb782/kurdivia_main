@@ -132,6 +132,7 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                           alignment: Alignment.center,
                           child: InkWell(
                             onTap: ()async{
+                              value.notifyListeners();
                               value.signUpWithPhoneNumber(context);
 
                               // kNavigator(context, InfoLogin());
@@ -158,6 +159,13 @@ class PhoneNumber extends StatelessWidget implements ApiStatusLogin {
                     ),
                   ),
                 ),
+                value.isloading ? const Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Center(child: CircularProgressIndicator(
+                      color: Colors.black, backgroundColor: Colors.white,))): Container(),
               ],
             ),
           ));

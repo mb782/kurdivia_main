@@ -69,11 +69,13 @@ class ApiService extends ChangeNotifier {
   int index = 1;
   Timestamp timeevent = Timestamp.now();
   bool checkenterevent = false;
+  int numwinner = 0;
 
   String imagesponsor = '';
   String namesponsor = '';
   String linksponsor = '';
   bool file = false;
+  bool isloading = false;
 
   String question = '';
   String qanswer = '';
@@ -177,11 +179,11 @@ class ApiService extends ChangeNotifier {
 
 
   Stream<QuerySnapshot> getAllEvents(){
-    return fs.collection('events').snapshots();
+    return fs.collection('events').orderBy('date').snapshots();
 
   }
   Future<DocumentSnapshot<Map<String, dynamic>>> getAllwinner(){
-    return fs.collection('events').doc('cm2a9V4Vd9TPOooqZ1FG').get();
+    return fs.collection('events').doc(idevents).get();
   }
   Future<DocumentSnapshot<Map<String, dynamic>>> getAllwinnerdetail(x){
     return fs.collection('users').doc(x).get();
@@ -205,17 +207,25 @@ class ApiService extends ChangeNotifier {
     index = idx + 1;
     notifyListeners();
   }
-  getsponsor(Timestamp timestamp,x,String image,bool files)async{
+  getsponsor(Timestamp timestamp,x,String image,bool files,String num)async{
     DateTime ntptime = await NTP.now();
     Timestamp ts = timestamp;
-    maxsecond = ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds;
-    if(maxsecond > 0 && maxsecond <= 300){
+    int second = 0;
+    second = ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds - 4;
+    if(second > 0 && second <= 300){
+      maxsecond = second;
+      visibily = true;
+    }
+    else if(second > 300){
+      maxsecond = second;
       visibily = true;
     }
     else{
       visibily = false;
-      maxsecond = 10;
+      maxsecond = 5;
     }
+    numwinner = int.parse(num);
+    print(numwinner);
     file = files;
     imagesponsor = image;
     idevents = x;
@@ -294,7 +304,7 @@ class ApiService extends ChangeNotifier {
   }
   getanswer(bool answer)async{
     if( qanswer == ''){
-      print('--------------------dsfhdsjk');
+      print('--------------------dsfhdsjk----------');
       winner = false;
       await fs.collection('events').doc(idevents).collection('question').doc(question).get().then((value){
         List lista = value.get('answera');
@@ -311,7 +321,6 @@ class ApiService extends ChangeNotifier {
         winner = false;
       }
       print('--------------------dsfhdsjk');
-      print(winner);
       List list = [
         myUser,
       ];
@@ -372,6 +381,7 @@ class ApiService extends ChangeNotifier {
 
 
   signUpWithPhoneNumber(context) async {
+    isloading = true;
     if (isWaitingForCode == false) {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phoneNumberController.text,
@@ -394,6 +404,7 @@ class ApiService extends ChangeNotifier {
           notifyListeners();
 
           myVerificationId = verificationId;
+          isloading = false;
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           print(verificationId);
@@ -414,6 +425,7 @@ class ApiService extends ChangeNotifier {
         //   print(v);
         // });
         await fs.collection('users').doc(myUser).get().then((value){
+          isloading = false;
           if(value.data() == null){
             kNavigator(context, InfoLogin(visible: false,));
           }
@@ -442,8 +454,10 @@ class ApiService extends ChangeNotifier {
         fullName: fullName,
         occupation: occupation,
         location: location,
-        age: age, phoneNumber: phone);
+        age: age, phoneNumber: phone,
+        image: '');
     registerUser(userData);
+
   }
   Future registerUser(UserData user) async {
     if (auth.currentUser != null) {
@@ -482,6 +496,7 @@ class ApiService extends ChangeNotifier {
 
 void LoginFacebook(context) async {
     try {
+      isloading = true;
       final fbloginresult = await FacebookAuth.instance.login();
       LoginBehavior loginBehavior = LoginBehavior.webOnly;
   final userdata = await FacebookAuth.instance.getUserData();
@@ -494,6 +509,7 @@ void LoginFacebook(context) async {
       image = userdata['picture']['data']['url'];
       print(myUser);
       await fs.collection('users').doc(myUser).get().then((value){
+        isloading = false;
         if(value.data() == null){
           kNavigator(context, InfoLogin(visible: true,));
         }
@@ -504,12 +520,14 @@ void LoginFacebook(context) async {
         }
       });
     } on Exception catch (e) {
+      isloading = false;
       print(e);
     }
   }
 
   void SaveUser(context) async {
     try {
+      isloading = true;
       if (fullNameController.text.isNotEmpty ||
           phoneNumberController.text.isNotEmpty ||
           occupationController.text.isNotEmpty ||
@@ -520,7 +538,7 @@ void LoginFacebook(context) async {
           'image': image,
           'phonenumber': phoneNumberController.text,
           'occupation': occupationController.text,
-          'location': occupationController.text,
+          'location': locationController.text,
           'age': ageController.text,
           'birthday': DateTime(dateTime!.year, dateTime!.month, dateTime!.day),
         }).whenComplete(() {
@@ -528,9 +546,11 @@ void LoginFacebook(context) async {
           kNavigatorreplace(context, NavigateBar());
         });
       } else {
+        isloading = false;
         //erroe
       }
     } on Exception catch (e) {
+      isloading = false;
       print(e);
     }
   }

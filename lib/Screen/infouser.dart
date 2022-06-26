@@ -6,6 +6,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:kurdivia/Screen/mainpage.dart';
+import 'package:kurdivia/Screen/setting.dart';
 import 'package:kurdivia/Widgets/navigatebar.dart';
 import 'package:kurdivia/provider/ApiService.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,7 @@ class _InfoUserState extends State<InfoUser> implements ApiStatusLogin {
                     top: 30,
                     child: InkWell(
                       onTap: () {
-                        value.signOut(context);
+                        kNavigator(context, Setting());
                       },
                       child: const Image(
                         height: 40,

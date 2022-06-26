@@ -21,8 +21,10 @@ class _FirstPageState extends State<FirstPage> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: Scaffold(
           body: Stack(
@@ -174,6 +176,7 @@ class _FirstPageState extends State<FirstPage> {
                           ),
                           InkWell(
                             onTap: (){
+                              setState(() {});
                               context.read<ApiService>().LoginFacebook(context);
 
                             },
@@ -245,6 +248,13 @@ class _FirstPageState extends State<FirstPage> {
 
                 ],
               ),
+        context.read<ApiService>().isloading ? const Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Center(child: CircularProgressIndicator(
+                    color: Colors.black, backgroundColor: Colors.white,))): Container(),
             ],
           ),
         ));

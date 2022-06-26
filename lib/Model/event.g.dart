@@ -14,7 +14,6 @@ EventData _$EventDataFromJson(Map<String, dynamic> json) => EventData(
   link: json['link'] as String,
   numwinner: json['numwinner'] as String,
   price: json['price'] as String, opprice: json['opprice'] as String,
-  numusers: json['numusers'] as int,
 
 
 
@@ -30,7 +29,6 @@ Map<String, dynamic> _$EventDataToJson(EventData instance) => <String, dynamic>{
   'numwinner' : instance.numwinner,
   'price' : instance.price,
   'opprice' : instance.opprice,
-  'numusers' : instance.numusers,
 
 
 

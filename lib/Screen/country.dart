@@ -291,6 +291,7 @@ class _InfoLoginState extends State<InfoLogin> implements ApiStatusLogin {
                         alignment: Alignment.center,
                         child: InkWell(
                           onTap: () {
+                            value.notifyListeners();
                             value.SaveUser(context);
                           },
                           child: Container(
@@ -320,6 +321,13 @@ class _InfoLoginState extends State<InfoLogin> implements ApiStatusLogin {
                   ),
                 ),
               ),
+              value.isloading ? const Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Center(child: CircularProgressIndicator(
+                    color: Colors.black, backgroundColor: Colors.white,))): Container(),
             ],
           ),
         ));

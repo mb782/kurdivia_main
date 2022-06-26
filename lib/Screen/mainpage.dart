@@ -343,12 +343,12 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                         left: 0,
                         child: InkWell(
                           onTap: ()async{
-                            // DateTime ntptime = await NTP.now();
-                            // Timestamp ts = snapshot.data!.docs[0].get('date');
-                            // print(ntptime.toUtc());
-                            // print(ts.toDate().toUtc());
-                            // print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
-                            // print(ntptime.toUtc().difference(ts.toDate().toUtc()).inSeconds);
+                            DateTime ntptime = await NTP.now();
+                            Timestamp ts = snapshot.data!.docs[0].get('date');
+                            print(ntptime.toUtc());
+                            print(ts.toDate().toUtc());
+                            print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
+                            print(ntptime.toUtc().difference(ts.toDate().toUtc()).inSeconds);
 
                           },
                           child: Container(
@@ -377,7 +377,7 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                           child: InkWell(
                             onTap: () async {
 
-                              await value.getsponsor(snapshot.data!.docs[0].get('date'),x,snapshot.data!.docs[0].get('image'),snapshot.data!.docs[0].get('file'));
+                              await value.getsponsor(snapshot.data!.docs[0].get('date'),x,snapshot.data!.docs[0].get('image'),snapshot.data!.docs[0].get('file'),snapshot.data!.docs[0].get('numwinner'));
                               kNavigator(context, SponsorPage(maxsecond: value.maxsecond));
                               if (kDebugMode) {
                                 print(value.idevents);
@@ -420,7 +420,7 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
             );
           }
 
-          return const CircularProgressIndicator();
+          return Center(child: const CircularProgressIndicator(color: Colors.black,backgroundColor: Colors.white,));
         },
       );
     });

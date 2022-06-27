@@ -244,11 +244,17 @@ class _WinnersState extends State<Winners> implements ApiStatusLogin {
                                 AsyncSnapshot<DocumentSnapshot<
                                     Map<String, dynamic>>> snapshot) {
                               if (snapshot.hasData) {
+                                if(snapshot.data!.data()!.isEmpty){
+                                  return Center(
+                                    child: Text('No Winner'),
+                                  );
+                                }
+
                                 List list = snapshot.data!.get('winner');
                                 return Container(
                                   height: 200,
                                   child: ListView.builder(
-                                    itemCount: value.numwinner,
+                                    itemCount: list.length <= value.numwinner ? list.length : value.numwinner,
 
                                       itemBuilder: (context,index){
                                     return Container(

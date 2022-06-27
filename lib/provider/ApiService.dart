@@ -222,7 +222,7 @@ class ApiService extends ChangeNotifier {
     }
     else{
       visibily = false;
-      maxsecond = 5;
+      maxsecond = 50;
     }
     numwinner = int.parse(num);
     print(numwinner);

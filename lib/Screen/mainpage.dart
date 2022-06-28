@@ -9,18 +9,39 @@ import 'package:kurdivia/Screen/sponsorpage.dart';
 import 'package:kurdivia/constant.dart';
 import 'package:kurdivia/provider/ApiService.dart';
 import 'package:ntp/ntp.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Widgets/navigatebar.dart';
 import '../Model/event.dart';
 import '../Widgets/navigatebar.dart';
 
-class MainPage extends StatelessWidget implements ApiStatusLogin {
+class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> implements ApiStatusLogin{
   late BuildContext context;
+
   final phoneController = TextEditingController();
+
   final codeController = TextEditingController();
+
   String phone = '';
+
+  @override
+  void initState(){
+    Future.delayed(Duration.zero).then((value)async{
+      await Permission.location.request();
+      var status = await Permission.notification.status;
+      print(status);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +278,11 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
                     children: [
                       InkWell(
                         onTap: ()async{
+                          await Permission.location.request();
+                          var status = await Permission.notification.status;
+                          print(status);
                           final url = eventData.link;
+                          print(url);
                           await launch(url);
                           if (await canLaunch(
                               url)) {
@@ -425,5 +450,4 @@ class MainPage extends StatelessWidget implements ApiStatusLogin {
       );
     });
   }
-
 }

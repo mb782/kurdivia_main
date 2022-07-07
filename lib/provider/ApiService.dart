@@ -83,6 +83,8 @@ class ApiService extends ChangeNotifier {
   int answerb = 0;
   int answerc = 0;
   bool winner = true;
+  Map map = {};
+
 
 
   // GET
@@ -201,6 +203,15 @@ class ApiService extends ChangeNotifier {
   }
   Future<DocumentSnapshot<Map<String, dynamic>>> getnumusers(){
     return fs.collection('events').doc(idevents).get();
+  }
+
+  getvisibilymain(List list){
+    for(int i=0;i<list.length;i++){
+      if(list[i]==myUser){
+        return false;
+      }
+    }
+    return true;
   }
 
   getpageindex(int idx){

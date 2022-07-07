@@ -122,76 +122,84 @@ class _MainPageState extends State<MainPage> implements ApiStatusLogin{
                                     },
                                     child: ListView.builder(
                                       itemCount: snapshot.data!.docs.length,
-                                      itemBuilder: (context, index) {
+                                      itemBuilder: (context, index){
                                         {
-                                          return DelayedDisplay(
-                                            delay: Duration(
-                                                milliseconds:
-                                                    (0 + ((index + 1) * 400))
-                                                        .toInt()),
-                                            fadeIn: true,
-                                            slidingCurve: Curves.easeIn,
-                                            child: InkWell(
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: 200,
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 20,
-                                                        vertical: 10),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(30),
-                                                  boxShadow: const [
-                                                    BoxShadow(
-                                                      color: Colors.black,
-                                                      blurRadius: 20,
-                                                      offset: Offset(0, 10),
-                                                    )
-                                                  ]
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    ClipRRect(
-                                                      child: Image(
-                                                        image: const AssetImage(
-                                                            'assets/images/3.png'),
-                                                        width:
-                                                            MediaQuery.of(context)
-                                                                .size
-                                                                .width,
-                                                        height: 200,
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30),
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        DelayedDisplay(
-                                                          child: Container(
-                                                            child: getdata(
-                                                                snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                    .id),
-                                                          ),
-                                                          delay: Duration(
-                                                              milliseconds: (0 +
-                                                                  ((index +
-                                                                      1) *
-                                                                      400))
-                                                                  .toInt()),
+                                          List list = snapshot.data!.docs[index].get('users');
+                                          print(list);
+                                          return Visibility(
+                                            visible:list.isNotEmpty ? value.getvisibilymain(list) : true,
+                                              child: DelayedDisplay(
+                                              delay: Duration(
+                                                  milliseconds:
+                                                      (0 + ((index + 1) * 400))
+                                                          .toInt()),
+                                              fadeIn: true,
+                                              slidingCurve: Curves.easeIn,
+                                              child: InkWell(
+
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: 200,
+                                                  margin:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 10),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(30),
+                                                    boxShadow: const [
+                                                      BoxShadow(
+                                                        color: Colors.black,
+                                                        blurRadius: 20,
+                                                        offset: Offset(0, 10),
+                                                      )
+                                                    ]
+                                                  ),
+                                                  child: Stack(
+                                                    children: [
+                                                      ClipRRect(
+                                                        child: Image(
+                                                          image: const AssetImage(
+                                                              'assets/images/3.png'),
+                                                          width:
+                                                              MediaQuery.of(context)
+                                                                  .size
+                                                                  .width,
+                                                          height: 200,
+                                                          fit: BoxFit.fill,
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                30),
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          DelayedDisplay(
+                                                            child: Container(
+                                                              child: getdata(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .docs[index]
+                                                                      .id),
+                                                            ),
+                                                            delay: Duration(
+                                                                milliseconds: (0 +
+                                                                    ((index +
+                                                                        1) *
+                                                                        400))
+                                                                    .toInt()),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
+                                                onTap: () async {
+
+                                                },
                                               ),
-                                              onTap: () async {},
                                             ),
                                           );
                                         }
@@ -313,7 +321,8 @@ class _MainPageState extends State<MainPage> implements ApiStatusLogin{
                             ],
                           ),
                         ),
-                      ),                      Container(
+                      ),
+                      Container(
                           margin: EdgeInsets.only(top: 10, left: 100),
                           width: 150,
                           height: 40,
@@ -368,12 +377,12 @@ class _MainPageState extends State<MainPage> implements ApiStatusLogin{
                         left: 0,
                         child: InkWell(
                           onTap: ()async{
-                            DateTime ntptime = await NTP.now();
-                            Timestamp ts = snapshot.data!.docs[0].get('date');
-                            print(ntptime.toUtc());
-                            print(ts.toDate().toUtc());
-                            print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
-                            print(ntptime.toUtc().difference(ts.toDate().toUtc()).inSeconds);
+                            // DateTime ntptime = await NTP.now();
+                            // Timestamp ts = snapshot.data!.docs[0].get('date');
+                            // print(ntptime.toUtc());
+                            // print(ts.toDate().toUtc());
+                            // print(ts.toDate().toUtc().difference(ntptime.toUtc()).inSeconds);
+                            // print(ntptime.toUtc().difference(ts.toDate().toUtc()).inSeconds);
 
                           },
                           child: Container(

@@ -163,7 +163,7 @@ class _SplashScreenState extends State<SplashScreen> {
       loggedIn = false;
     }
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 20), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -176,15 +176,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kDarkBlue,
+        backgroundColor: Colors.white,
         body: Center(
           child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.1,
-              child: const Text(
-                'Quiz App',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              )),
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Image(image: AssetImage('assets/images/logo.png'))),
         ));
   }
 

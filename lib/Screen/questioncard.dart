@@ -226,7 +226,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
                       slidingCurve: Curves.elasticInOut,
                       child: InkWell(
                           onTap: () {
-                            if (Second != 0 && value.visibily) {
+                            if (Second != 0 && value.visibily && value.winner) {
                               selecteda = true;
                               selectedb = false;
                               selectedc = false;
@@ -284,7 +284,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
                       slidingCurve: Curves.elasticInOut,
                       child: InkWell(
                         onTap: () {
-                          if (Second != 0 && value.visibily) {
+                          if (Second != 0 && value.visibily && value.winner) {
                             selecteda = false;
                             selectedb = true;
                             selectedc = false;
@@ -343,7 +343,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
                       slidingCurve: Curves.elasticInOut,
                       child: InkWell(
                         onTap: () {
-                          if (Second != 0 && value.visibily) {
+                          if (Second != 0 && value.visibily && value.winner) {
                             selecteda = false;
                             selectedb = false;
                             selectedc = true;

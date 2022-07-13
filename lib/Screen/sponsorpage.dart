@@ -52,6 +52,7 @@ class _SponsorPageState extends State<SponsorPage> implements ApiStatusLogin {
                 timer.cancel();
                 Provider.of<ApiService>(context, listen: false).getcheckenter();
                 controller.pause();
+                Provider.of<ApiService>(context, listen: false).firstTimer=DateTime.now();
                 kNavigator(context, QuestionPage());
               }
             }

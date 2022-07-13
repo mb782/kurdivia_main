@@ -52,184 +52,184 @@ class _MainPageState extends State<MainPage> implements ApiStatusLogin{
         value.apiListener(this);
         return SafeArea(
             child: Scaffold(
-          body: Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/2.jpg"),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 30,
-                left: 30,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      child: value.image == ''
-                          ? Text(
-                              value.name.split('').first,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 40,
-                                  color: Colors.black),
-                            )
-                          : Center(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(35),
-                                child: Image(
-                                    image: NetworkImage(value.image),
-                                    fit: BoxFit.fill),
-                              ),
-                            ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      value.name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                top: 120,
-                child: SizedBox(
+              body: Stack(
+                children: [
+                  Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: context.read<ApiService>().getAllEvents(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/2.jpg"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 30,
+                    left: 30,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.white,
+                          child: value.image == ''
+                              ? Text(
+                            value.name.split('').first,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40,
+                                color: Colors.black),
+                          )
+                              : Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image(
+                                  image: NetworkImage(value.image),
+                                  fit: BoxFit.fill),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          value.name,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: 120,
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: context.read<ApiService>().getAllEvents(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
 
-                        if (snapshot.hasData) {
-                          return SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Container(
-                                  height:
+                            if (snapshot.hasData) {
+                              return SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height:
                                       MediaQuery.of(context).size.height * 0.745,
-                                  child: RefreshIndicator(
-                                    onRefresh: ()async{
-                                      value.notifyListeners();
-                                    },
-                                    child: ListView.builder(
-                                      itemCount: snapshot.data!.docs.length,
-                                      itemBuilder: (context, index){
-                                        {
-                                          List list = snapshot.data!.docs[index].get('users');
-                                          print(list);
-                                          return Visibility(
-                                            visible:list.isNotEmpty ? value.getvisibilymain(list) : true,
-                                              child: DelayedDisplay(
-                                              delay: Duration(
-                                                  milliseconds:
+                                      child: RefreshIndicator(
+                                        onRefresh: ()async{
+                                          value.notifyListeners();
+                                        },
+                                        child: ListView.builder(
+                                          itemCount: snapshot.data!.docs.length,
+                                          itemBuilder: (context, index){
+                                            {
+                                              List list = snapshot.data!.docs[index].get('users');
+                                              print(list);
+                                              return Visibility(
+                                                visible:list.isNotEmpty ? value.getvisibilymain(list) : true,
+                                                child: DelayedDisplay(
+                                                  delay: Duration(
+                                                      milliseconds:
                                                       (0 + ((index + 1) * 400))
                                                           .toInt()),
-                                              fadeIn: true,
-                                              slidingCurve: Curves.easeIn,
-                                              child: InkWell(
+                                                  fadeIn: true,
+                                                  slidingCurve: Curves.easeIn,
+                                                  child: InkWell(
 
-                                                child: Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: 200,
-                                                  margin:
+                                                    child: Container(
+                                                      width: MediaQuery.of(context)
+                                                          .size
+                                                          .width,
+                                                      height: 200,
+                                                      margin:
                                                       const EdgeInsets.symmetric(
                                                           horizontal: 20,
                                                           vertical: 10),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(30),
-                                                    boxShadow: const [
-                                                      BoxShadow(
-                                                        color: Colors.black,
-                                                        blurRadius: 20,
-                                                        offset: Offset(0, 10),
-                                                      )
-                                                    ]
-                                                  ),
-                                                  child: Stack(
-                                                    children: [
-                                                      ClipRRect(
-                                                        child: Image(
-                                                          image: const AssetImage(
-                                                              'assets/images/3.png'),
-                                                          width:
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(30),
+                                                          boxShadow: const [
+                                                            BoxShadow(
+                                                              color: Colors.black,
+                                                              blurRadius: 20,
+                                                              offset: Offset(0, 10),
+                                                            )
+                                                          ]
+                                                      ),
+                                                      child: Stack(
+                                                        children: [
+                                                          ClipRRect(
+                                                            child: Image(
+                                                              image: const AssetImage(
+                                                                  'assets/images/3.png'),
+                                                              width:
                                                               MediaQuery.of(context)
                                                                   .size
                                                                   .width,
-                                                          height: 200,
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                        borderRadius:
+                                                              height: 200,
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                            borderRadius:
                                                             BorderRadius.circular(
                                                                 30),
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          DelayedDisplay(
-                                                            child: Container(
-                                                              child: getdata(
-                                                                  snapshot
-                                                                      .data!
-                                                                      .docs[index]
-                                                                      .id),
-                                                            ),
-                                                            delay: Duration(
-                                                                milliseconds: (0 +
-                                                                    ((index +
-                                                                        1) *
-                                                                        400))
-                                                                    .toInt()),
+                                                          ),
+                                                          Column(
+                                                            children: [
+                                                              DelayedDisplay(
+                                                                child: Container(
+                                                                  child: getdata(
+                                                                      snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                          .id),
+                                                                ),
+                                                                delay: Duration(
+                                                                    milliseconds: (0 +
+                                                                        ((index +
+                                                                            1) *
+                                                                            400))
+                                                                        .toInt()),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                    ],
+                                                    ),
+                                                    onTap: () async {
+
+                                                    },
                                                   ),
                                                 ),
-                                                onTap: () async {
-
-                                                },
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      },
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                          //;
-                        } else if (snapshot.hasError) {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height:
+                              );
+                              //;
+                            } else if (snapshot.hasError) {
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                    height:
                                     MediaQuery.of(context).size.height * 0.5,
-                              ),
-                              Text(snapshot.error.toString()),
-                            ],
-                          );
-                        }
+                                  ),
+                                  Text(snapshot.error.toString()),
+                                ],
+                              );
+                            }
 
-                        return Center(child: const CircularProgressIndicator(color: Colors.black,backgroundColor: Colors.white,));
-                      },
-                    )),
+                            return Center(child: const CircularProgressIndicator(color: Colors.black,backgroundColor: Colors.white,));
+                          },
+                        )),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            ));
       },
     );
   }
@@ -410,7 +410,6 @@ class _MainPageState extends State<MainPage> implements ApiStatusLogin{
                           left: 130,
                           child: InkWell(
                             onTap: () async {
-
                               await value.getsponsor(snapshot.data!.docs[0].get('date'),x,snapshot.data!.docs[0].get('image'),snapshot.data!.docs[0].get('file'),snapshot.data!.docs[0].get('numwinner'));
                               kNavigator(context, SponsorPage(maxsecond: value.maxsecond));
                               if (kDebugMode) {

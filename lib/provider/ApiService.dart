@@ -56,7 +56,10 @@ class ApiService extends ChangeNotifier {
   TextEditingController get getagenumber => agenumber;
 
   // [Data] --------------------------------------------//
-
+  late DateTime firstTimer;
+  late DateTime lastTimer;
+  late var remainTime;
+  int trueAnswerCounter=0;
   String name = 'M';
   String image = '';
   String Phonnumber = '';
@@ -143,6 +146,10 @@ class ApiService extends ChangeNotifier {
   apiListenerUpload(UploadStatus uploadStatus) {
     this.uploadStatus = uploadStatus;
   }
+  setDifference() {
+    remainTime=lastTimer.difference(firstTimer).inMilliseconds;
+  }
+
 
   setLoading(bool b) {
     loadingAuth = b;
@@ -184,15 +191,20 @@ class ApiService extends ChangeNotifier {
     return fs.collection('events').orderBy('date').snapshots();
 
   }
-  Future<DocumentSnapshot<Map<String, dynamic>>> getAllwinner(){
-    return fs.collection('events').doc(idevents).get();
-  }
+  // Future<DocumentSnapshot<Map<String, dynamic>>> getAllwinner(){
+  //   return fs.collection('events').doc(idevents).get();
+  // }
+
   Future<DocumentSnapshot<Map<String, dynamic>>> getAllwinnerdetail(x){
     return fs.collection('users').doc(x).get();
   }
 
   Stream<QuerySnapshot> getAllEventsData(id){
     return fs.collection('events').doc(id).collection('data').snapshots();
+
+  }
+  Stream<QuerySnapshot> getAllwinner(){
+    return fs.collection('events').doc(idevents).collection('winner').orderBy('counter',descending:true).orderBy('time').snapshots();
 
   }
   Stream<QuerySnapshot> getEventDetail(){
@@ -241,6 +253,7 @@ class ApiService extends ChangeNotifier {
     imagesponsor = image;
     idevents = x;
     timeevent = timestamp;
+    trueAnswerCounter = 0;
   }
 
 
@@ -295,17 +308,27 @@ class ApiService extends ChangeNotifier {
   //   }
   // }
   getwinner()async{
-    if(winner == true){
-      List list = [
-        myUser,
-      ];
-      Map<String,dynamic> map = {
-        'winner' : FieldValue.arrayUnion(list),
-      };
-      await fs.collection('events').doc(idevents).update(map).whenComplete(() {
-        print(winner);
-      });
-    }
+    // if(winner == true){
+    //   List list = [
+    //     myUser,
+    //   ];
+    //   Map<String,dynamic> map = {
+    //     'winner' : FieldValue.arrayUnion(list),
+    //   };
+    //   await fs.collection('events').doc(idevents).update(map).whenComplete(() {
+    //     print(winner);
+    //   });
+    // }
+    lastTimer=DateTime.now();
+    setDifference();
+    Map<String,dynamic> map = {
+      'counter' : trueAnswerCounter,
+      'time':remainTime
+
+    };
+    await fs.collection('events').doc(idevents).collection('winner').doc(myUser).set(map).whenComplete(() {
+      print(idevents);
+    }).onError((error, stackTrace) => print(error));
 
   }
   getresetanswer(){
@@ -505,12 +528,12 @@ class ApiService extends ChangeNotifier {
   }
 
 
-void LoginFacebook(context) async {
+  void LoginFacebook(context) async {
     try {
       isloading = true;
       final fbloginresult = await FacebookAuth.instance.login();
       LoginBehavior loginBehavior = LoginBehavior.webOnly;
-  final userdata = await FacebookAuth.instance.getUserData();
+      final userdata = await FacebookAuth.instance.getUserData();
       final FacebookAuthCredential =
       FacebookAuthProvider.credential(fbloginresult.accessToken!.token);
 

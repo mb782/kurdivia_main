@@ -238,45 +238,50 @@ class _WinnersState extends State<Winners> implements ApiStatusLogin {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            future: context.read<ApiService>().getAllwinner(),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height*0.24,
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: context.read<ApiService>().getAllwinner(),
                             builder: (BuildContext context,
-                                AsyncSnapshot<DocumentSnapshot<
-                                    Map<String, dynamic>>> snapshot) {
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+
                               if (snapshot.hasData) {
-                                if(snapshot.data!.data()!.isEmpty){
-                                  return Center(
-                                    child: Text('No Winner'),
-                                  );
-                                }
+                                return ListView.builder(
+                                    itemCount: (snapshot.data!.size >= value.numwinner) ? value.numwinner: snapshot.data!.size,
 
-                                List list = snapshot.data!.get('winner');
-                                return Container(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    itemCount: list.length <= value.numwinner ? list.length : value.numwinner,
-
-                                      itemBuilder: (context,index){
-                                    return Container(
-                                      margin: EdgeInsets.symmetric(vertical: 5),
-                                        padding: EdgeInsets.symmetric(horizontal: 20),
-                                        height: 75,
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width * 0.8,
-                                        decoration: BoxDecoration(
-                                            color: kLightBlue,
-                                            borderRadius: BorderRadius.circular(30)),
-                                        child: getwinnerdetail(list[index]));
-                                  }),
+                                    itemBuilder: (context,index){
+                                      return Container(
+                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          padding: EdgeInsets.symmetric(horizontal: 20),
+                                          height: 75,
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width * 0.8,
+                                          decoration: BoxDecoration(
+                                              color: kLightBlue,
+                                              borderRadius: BorderRadius.circular(30)),
+                                          child: getwinnerdetail(snapshot.data?.docs[index].id));
+                                    });
+                                //;
+                              } else if (snapshot.hasError) {
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height:
+                                        MediaQuery.of(context).size.height * 0.5,
+                                      ),
+                                      Text(snapshot.error.toString()),
+                                    ],
+                                  ),
                                 );
                               }
-                              return Center(
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.black,
-                                    backgroundColor: Colors.white,));
-                            }),
+
+                              return Center(child: const CircularProgressIndicator(color: Colors.black,backgroundColor: Colors.white,));
+                            },
+                          ),
+                        ),
                         ListView(
                           shrinkWrap: true,
                           children: const[
@@ -326,41 +331,41 @@ class _WinnersState extends State<Winners> implements ApiStatusLogin {
   getwinnerdetail(id) {
     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: context.read<ApiService>().getAllwinnerdetail(id),
-    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
           if(snapshot.hasData){
             return Row(
-              children: [
-              CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.white,
-              child: snapshot.data!.get('image') == ''
-                  ? Text(
-                snapshot.data!.get('name').split('').first,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.black),
-              )
-                  : Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(35),
-                  child: Image(
-                      image: NetworkImage(snapshot.data!.get('image')),
-                      fit: BoxFit.fill),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Center(
-            child: Text(snapshot.data!.get('name'),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-      ),
-              ]
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: snapshot.data!.get('image') == ''
+                        ? Text(
+                      snapshot.data!.get('name').split('').first,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                    )
+                        : Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(35),
+                        child: Image(
+                            image: NetworkImage(snapshot.data!.get('image')),
+                            fit: BoxFit.fill),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Center(
+                    child: Text(snapshot.data!.get('name'),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                  ),
+                ]
             );
           }
-    return Center(child: const CircularProgressIndicator(color: Colors.black,backgroundColor: Colors.white,));
-    });
+          return Center(child: const CircularProgressIndicator(color: Colors.black,backgroundColor: Colors.white,));
+        });
   }
 
   @override
